@@ -1,0 +1,6 @@
+Standalone module: build PASS; vet PASS; unit tests PASS.
+API/SQL on PGlite, single connection:
+=== RUN   TestKnowledgeDesk
+--- PASS: TestKnowledgeDesk (0.04s)
+PASS
+ok  	knowledgedesk/tests	0.045s

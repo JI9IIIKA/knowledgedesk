@@ -1,0 +1,4 @@
+CREATE TABLE documents(tenant text NOT NULL,id text NOT NULL,owner_id text NOT NULL,title text NOT NULL,version integer NOT NULL DEFAULT 1,public boolean NOT NULL DEFAULT false,content text NOT NULL,status text NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','ready')),PRIMARY KEY(tenant,id));
+CREATE TABLE document_access(tenant text NOT NULL,document_id text NOT NULL,user_id text NOT NULL,PRIMARY KEY(tenant,document_id,user_id),FOREIGN KEY(tenant,document_id) REFERENCES documents(tenant,id) ON DELETE CASCADE);
+CREATE TABLE chunks(tenant text NOT NULL,document_id text NOT NULL,version integer NOT NULL,ordinal integer NOT NULL,content text NOT NULL,search tsvector GENERATED ALWAYS AS (to_tsvector('simple',content)) STORED,PRIMARY KEY(tenant,document_id,version,ordinal),FOREIGN KEY(tenant,document_id) REFERENCES documents(tenant,id) ON DELETE CASCADE);
+CREATE INDEX chunk_search ON chunks USING gin(search);
